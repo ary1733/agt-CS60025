@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# # Imports for Simulation and Visualiation
+
 # In[1]:
 
 
@@ -9,6 +11,16 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+# ### Class Game
+# - Attributes
+#     - PayoffMatrix
+#         : Payoff Matrix of two player Game
+# - Methods
+#     - findSDSE
+#         : Computes Strong Dominant Strategy Equilibrium if it exists.
+#     - findMSNE
+#         : Computes MSNE using indifference priciple.
 
 # In[2]:
 
@@ -20,6 +32,7 @@ class game:
                             [[(food//2) - ENERGY_LOSS_FROM_FIGHTING, (food//2) - ENERGY_LOSS_FROM_FIGHTING],[food,0]],
                             [[0, food],[(food//2), (food//2)]]
                             ]
+#     Arguments : None, Return: list of SDSE strategy
     def findSDSE(self):
         P1 = []
         P2 = []
@@ -33,6 +46,8 @@ class game:
             P2.append(1)
         ret = [(x, y) for x in P1 for y in P2]
         return ret
+
+#   Arguments: None, Return list of probability distribution over strategy for player 1 and player 2
     def findMSNE(self):
 
         SDSE = self.findSDSE()
@@ -42,17 +57,47 @@ class game:
             p[SDSE[0][0]] = 1
             q[SDSE[0][1]] = 1
             return [p,q]
-#         row player
+        
+#         row player Indifference Condition
         a = np.array([[1, 1], [self.payoffMatrix[0][0][0] - self.payoffMatrix[1][0][0], self.payoffMatrix[0][1][0] - self.payoffMatrix[1][1][0]] ])
         b = np.array([1, 0])
         q = np.linalg.solve(a, b)
-#         col player
+        
+#         col player Indifference Condition
         a = np.array([[1, 1], [self.payoffMatrix[0][0][1] - self.payoffMatrix[0][1][1], self.payoffMatrix[1][0][1] - self.payoffMatrix[1][1][1]] ])
         b = np.array([1, 0])
         p = np.linalg.solve(a, b) 
         return [p,q]
         
 
+
+# #### Global intitial Condtion
+# 1. STARTING_DOVES
+#     : The number of players who are Doves in the beginning
+# 2. STARTING_HAWKS
+#     : The number of players who are Doves in the beginning
+# 3. ROUNDS
+#     : Number of Rounds in the simulation
+# 4. STARTING_ENERGY
+#     : The amount of energy with which each player starts the game.
+# 5. MIN_FOOD_PER_ROUND
+#     : Min energy available per food.
+# 6. MAX_FOOD_PER_ROUND
+#     : Max energy available per food.
+# 7. MAX_FOOD_APPEARANCE
+#     : Max number of food appearance per round
+# 8. ENERGY_REQUIRED_FOR_REPRODUCTION
+#     : Minimum energy required to reproduce
+# 9. ENERGY_LOSS_PER_ROUND
+#     : Energy spent for surviving a round
+# 10. ENERGY_LOSS_FROM_FIGHTING
+#     : Energy spent over fighting
+# 11. ENERGY_REQUIRED_FOR_LIVING
+#     : Minimum energy required to remain alive
+#     
+# #### Model Formulation
+# 
+# Game Starts with gameInit(), a function which initialize all the agents. These agents are the players in this game and they can be either HAWK or DOVE. 
 
 # In[3]:
 
@@ -61,15 +106,15 @@ STARTING_DOVES = 1000
 STARTING_HAWKS = 1000
 STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
 
-ROUNDS = 150
+ROUNDS = 250
 STARTING_ENERGY = 100
 
 MIN_FOOD_PER_ROUND = 70
 MAX_FOOD_PER_ROUND = 70
 MAX_FOOD_APPEARANCE = 2000 # this tells how much max food can be found
 ENERGY_REQUIRED_FOR_REPRODUCTION = 250
-ENERGY_LOSS_PER_ROUND = 2
-ENERGY_LOSS_FROM_FIGHTING = 55
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 80
 ENERGY_REQUIRED_FOR_LIVING = 10
 
 STATUS_ACTIVE = "active"
@@ -134,11 +179,12 @@ def cull():
 
     dead_hawks = 0
     dead_doves = 0
-    for index, agent in enumerate(agents):
+    n = len(agents)
+    for index, agent in enumerate(reversed(agents)):
         if agent.energy < ENERGY_REQUIRED_FOR_LIVING:
             if agent.agent_type == TYPE_DOVE: dead_doves += 1
             if agent.agent_type == TYPE_HAWK: dead_hawks += 1
-            del agents[index]
+            del agents[n - index - 1]
 
 
     return dead_hawks, dead_doves
@@ -263,7 +309,7 @@ nppopulation = nphawk + npdove
 nppopulation = nppopulation/np.max(nppopulation)
 
 
-# In[17]:
+# In[5]:
 
 
 plt.clf()
@@ -280,7 +326,7 @@ plt.legend()
 plt.show()
 
 
-# In[6]:
+# In[7]:
 
 
 print(MSNE)
