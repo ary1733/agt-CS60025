@@ -3,7 +3,7 @@
 
 # # Imports for Simulation and Visualiation
 
-# In[1]:
+# In[2]:
 
 
 from random import randint, shuffle
@@ -22,7 +22,7 @@ import numpy as np
 #     - findMSNE
 #         : Computes MSNE using indifference priciple.
 
-# In[2]:
+# In[3]:
 
 
 class game:
@@ -97,24 +97,35 @@ class game:
 #     
 # #### Model Formulation
 # 
-# Game Starts with gameInit(), a function which initialize all the agents. These agents are the players in this game and they can be either HAWK or DOVE. 
+# 1. Game Starts with gameInit(), a function which initialize all the agents. These agents are the players in this game and they can be either HAWK or DOVE. 
+# 2. Then rounds start, while rounds <= ROUNDS **and** Agents Remaining >=2:
+#     1. Call AwakenAgents(), set the state of agent to **Awake State**.
+#     2. Generate the random food for the current round.
+#     3. Shuffle the agents for random pairing.
+#     4. Then pair the agents and let them compete over the food, However the max number of food appearance is limited by MAX_FOOD_APPEARANCE.
+#     5. Then the agents pay the cost of living a round.
+#     6. Cull() is called and every agent with energy less than ENERGY_REQUIRED_FOR_LIVING is deleted from the simulation.
+#     7. The remaing of the agents then reproduce if they have energy greater than ENERGY_REQUIRED_FOR_REPRODUCTION.
+#     8. Data is collected stored for further analysis.
+# 3. After the simulation ends we analyze and compare the data collected with the  theoretically calculated MSNE.
+#     
 
-# In[3]:
+# In[92]:
 
 
 STARTING_DOVES = 1000
 STARTING_HAWKS = 1000
 STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
 
-ROUNDS = 250
+ROUNDS = 200
 STARTING_ENERGY = 100
 
-MIN_FOOD_PER_ROUND = 70
+MIN_FOOD_PER_ROUND = 60
 MAX_FOOD_PER_ROUND = 70
-MAX_FOOD_APPEARANCE = 2000 # this tells how much max food can be found
+MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
 ENERGY_REQUIRED_FOR_REPRODUCTION = 250
 ENERGY_LOSS_PER_ROUND = 4
-ENERGY_LOSS_FROM_FIGHTING = 80
+ENERGY_LOSS_FROM_FIGHTING = 50-10
 ENERGY_REQUIRED_FOR_LIVING = 10
 
 STATUS_ACTIVE = "active"
@@ -250,7 +261,7 @@ def main():
         # Energy cost of 'living'
         for agent in agents:
             agent.energy -= ENERGY_LOSS_PER_ROUND
-
+        
         round_dead_hawks, round_dead_doves = cull()
         round_hawk_babies, round_dove_babies = breed()
         death_count += (round_dead_hawks + round_dead_doves)
@@ -298,7 +309,7 @@ def main():
 main()
 
 
-# In[4]:
+# In[93]:
 
 
 npdove = np.array(graph_dove_points)
@@ -309,7 +320,7 @@ nppopulation = nphawk + npdove
 nppopulation = nppopulation/np.max(nppopulation)
 
 
-# In[5]:
+# In[94]:
 
 
 plt.clf()
@@ -326,7 +337,7 @@ plt.legend()
 plt.show()
 
 
-# In[7]:
+# In[95]:
 
 
 print(MSNE)
@@ -335,5 +346,18 @@ print(MSNE)
 # In[ ]:
 
 
+STARTING_DOVES = 1000
+STARTING_HAWKS = 1000
+STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
 
+ROUNDS = 500
+STARTING_ENERGY = 100
+
+MIN_FOOD_PER_ROUND = 10
+MAX_FOOD_PER_ROUND = 70
+MAX_FOOD_APPEARANCE = 2000 # this tells how much max food can be found
+ENERGY_REQUIRED_FOR_REPRODUCTION = 250
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 35
+ENERGY_REQUIRED_FOR_LIVING = 10
 
