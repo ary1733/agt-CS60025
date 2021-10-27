@@ -110,7 +110,7 @@ class game:
 # 3. After the simulation ends we analyze and compare the data collected with the  theoretically calculated MSNE.
 #     
 
-# In[92]:
+# In[114]:
 
 
 STARTING_DOVES = 1000
@@ -121,11 +121,11 @@ ROUNDS = 200
 STARTING_ENERGY = 100
 
 MIN_FOOD_PER_ROUND = 60
-MAX_FOOD_PER_ROUND = 70
+MAX_FOOD_PER_ROUND = 60
 MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
 ENERGY_REQUIRED_FOR_REPRODUCTION = 250
 ENERGY_LOSS_PER_ROUND = 4
-ENERGY_LOSS_FROM_FIGHTING = 50-10
+ENERGY_LOSS_FROM_FIGHTING = 20+20+20+20
 ENERGY_REQUIRED_FOR_LIVING = 10
 
 STATUS_ACTIVE = "active"
@@ -233,6 +233,9 @@ def getFood():
 def awakenAgents():
     for agent in agents:
         agent.wake()
+def SendToSleep():
+    for agent in agents:
+        agent.sleep()
 def main():
     gameInit()
 
@@ -266,7 +269,7 @@ def main():
         round_hawk_babies, round_dove_babies = breed()
         death_count += (round_dead_hawks + round_dead_doves)
         breed_count += (round_hawk_babies + round_dove_babies)
-
+        SendToSleep()
 
         toc = time.time()
         # Plot
@@ -309,7 +312,7 @@ def main():
 main()
 
 
-# In[93]:
+# In[115]:
 
 
 npdove = np.array(graph_dove_points)
@@ -320,7 +323,7 @@ nppopulation = nphawk + npdove
 nppopulation = nppopulation/np.max(nppopulation)
 
 
-# In[94]:
+# In[116]:
 
 
 plt.clf()
@@ -337,7 +340,7 @@ plt.legend()
 plt.show()
 
 
-# In[95]:
+# In[117]:
 
 
 print(MSNE)
