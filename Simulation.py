@@ -75,7 +75,7 @@ class game:
 # 1. STARTING_DOVES
 #     : The number of players who are Doves in the beginning
 # 2. STARTING_HAWKS
-#     : The number of players who are Doves in the beginning
+#     : The number of players who are Hawks in the beginning
 # 3. ROUNDS
 #     : Number of Rounds in the simulation
 # 4. STARTING_ENERGY
@@ -107,10 +107,11 @@ class game:
 #     6. Cull() is called and every agent with energy less than ENERGY_REQUIRED_FOR_LIVING is deleted from the simulation.
 #     7. The remaing of the agents then reproduce if they have energy greater than ENERGY_REQUIRED_FOR_REPRODUCTION.
 #     8. Data is collected stored for further analysis.
+#     9. Agents Sent to sleet State.
 # 3. After the simulation ends we analyze and compare the data collected with the  theoretically calculated MSNE.
 #     
 
-# In[114]:
+# In[53]:
 
 
 STARTING_DOVES = 1000
@@ -120,12 +121,12 @@ STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
 ROUNDS = 200
 STARTING_ENERGY = 100
 
-MIN_FOOD_PER_ROUND = 60
-MAX_FOOD_PER_ROUND = 60
+MIN_FOOD_PER_ROUND = 40
+MAX_FOOD_PER_ROUND = 40
 MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
 ENERGY_REQUIRED_FOR_REPRODUCTION = 250
 ENERGY_LOSS_PER_ROUND = 4
-ENERGY_LOSS_FROM_FIGHTING = 20+20+20+20
+ENERGY_LOSS_FROM_FIGHTING = 60
 ENERGY_REQUIRED_FOR_LIVING = 10
 
 STATUS_ACTIVE = "active"
@@ -312,7 +313,7 @@ def main():
 main()
 
 
-# In[115]:
+# In[54]:
 
 
 npdove = np.array(graph_dove_points)
@@ -323,30 +324,31 @@ nppopulation = nphawk + npdove
 nppopulation = nppopulation/np.max(nppopulation)
 
 
-# In[116]:
+# In[55]:
 
 
 plt.clf()
 plt.plot(npdovePer, color = "purple", label = "Dove fraction")
 plt.plot(nphawkPer, color = "coral", label = "Hawk fraction")
-plt.plot(nppopulation, label = "Population")
+plt.plot(nppopulation, label = "Scaled Population")
 MSNE = game().findMSNE()
 plt.axhline(y=MSNE[0][0],color = 'red', linestyle='--', label = "Hawk in MSNE")
 plt.axhline(y=MSNE[0][1],color = 'purple', linestyle='--', label = "Dove in MSNE")
 plt.legend()
-
+plt.xlabel("Rounds")
+plt.ylabel("Population Ratio")
 
 
 plt.show()
 
 
-# In[117]:
+# In[50]:
 
 
 print(MSNE)
 
 
-# In[ ]:
+# In[122]:
 
 
 STARTING_DOVES = 1000
@@ -363,4 +365,79 @@ ENERGY_REQUIRED_FOR_REPRODUCTION = 250
 ENERGY_LOSS_PER_ROUND = 4
 ENERGY_LOSS_FROM_FIGHTING = 35
 ENERGY_REQUIRED_FOR_LIVING = 10
+
+
+# In[ ]:
+
+
+## case 1 in ppt
+STARTING_DOVES = 1000
+STARTING_HAWKS = 1000
+STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
+
+ROUNDS = 200
+STARTING_ENERGY = 100
+
+MIN_FOOD_PER_ROUND = 40
+MAX_FOOD_PER_ROUND = 40
+MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
+ENERGY_REQUIRED_FOR_REPRODUCTION = 250
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 10
+ENERGY_REQUIRED_FOR_LIVING = 10
+
+
+# case 2 in ppt
+STARTING_DOVES = 1000
+STARTING_HAWKS = 1000
+STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
+
+ROUNDS = 200
+STARTING_ENERGY = 100
+
+MIN_FOOD_PER_ROUND = 40
+MAX_FOOD_PER_ROUND = 40
+MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
+ENERGY_REQUIRED_FOR_REPRODUCTION = 250
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 25
+ENERGY_REQUIRED_FOR_LIVING = 10
+
+# case 3 in ppt
+STARTING_DOVES = 1000
+STARTING_HAWKS = 1000
+STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
+
+ROUNDS = 200
+STARTING_ENERGY = 100
+
+MIN_FOOD_PER_ROUND = 40
+MAX_FOOD_PER_ROUND = 40
+MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
+ENERGY_REQUIRED_FOR_REPRODUCTION = 250
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 20
+ENERGY_REQUIRED_FOR_LIVING = 10
+
+# case 4
+STARTING_DOVES = 1000
+STARTING_HAWKS = 1000
+STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
+
+ROUNDS = 200
+STARTING_ENERGY = 100
+
+MIN_FOOD_PER_ROUND = 40
+MAX_FOOD_PER_ROUND = 40
+MAX_FOOD_APPEARANCE = 1000 # this tells how much max food can be found
+ENERGY_REQUIRED_FOR_REPRODUCTION = 250
+ENERGY_LOSS_PER_ROUND = 4
+ENERGY_LOSS_FROM_FIGHTING = 60
+ENERGY_REQUIRED_FOR_LIVING = 10
+
+
+# In[ ]:
+
+
+
 
