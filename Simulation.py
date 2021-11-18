@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # Imports for Simulation and Visualiation
+# # Imports for Simulation and Visualization
 
-# In[2]:
+# In[1]:
 
 
 from random import randint, shuffle
@@ -22,7 +22,7 @@ import numpy as np
 #     - findMSNE
 #         : Computes MSNE using indifference priciple.
 
-# In[3]:
+# In[2]:
 
 
 class game:
@@ -107,18 +107,18 @@ class game:
 #     6. Cull() is called and every agent with energy less than ENERGY_REQUIRED_FOR_LIVING is deleted from the simulation.
 #     7. The remaing of the agents then reproduce if they have energy greater than ENERGY_REQUIRED_FOR_REPRODUCTION.
 #     8. Data is collected stored for further analysis.
-#     9. Agents Sent to sleet State.
+#     9. Agents Sent to sleep State.
 # 3. After the simulation ends we analyze and compare the data collected with the  theoretically calculated MSNE.
 #     
 
-# In[53]:
+# In[19]:
 
 
 STARTING_DOVES = 1000
 STARTING_HAWKS = 1000
 STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
 
-ROUNDS = 200
+ROUNDS = 500
 STARTING_ENERGY = 100
 
 MIN_FOOD_PER_ROUND = 40
@@ -313,7 +313,7 @@ def main():
 main()
 
 
-# In[54]:
+# In[20]:
 
 
 npdove = np.array(graph_dove_points)
@@ -324,7 +324,7 @@ nppopulation = nphawk + npdove
 nppopulation = nppopulation/np.max(nppopulation)
 
 
-# In[55]:
+# In[21]:
 
 
 plt.clf()
@@ -342,32 +342,13 @@ plt.ylabel("Population Ratio")
 plt.show()
 
 
-# In[50]:
+# In[22]:
 
 
 print(MSNE)
 
 
-# In[122]:
-
-
-STARTING_DOVES = 1000
-STARTING_HAWKS = 1000
-STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
-
-ROUNDS = 500
-STARTING_ENERGY = 100
-
-MIN_FOOD_PER_ROUND = 10
-MAX_FOOD_PER_ROUND = 70
-MAX_FOOD_APPEARANCE = 2000 # this tells how much max food can be found
-ENERGY_REQUIRED_FOR_REPRODUCTION = 250
-ENERGY_LOSS_PER_ROUND = 4
-ENERGY_LOSS_FROM_FIGHTING = 35
-ENERGY_REQUIRED_FOR_LIVING = 10
-
-
-# In[ ]:
+# In[7]:
 
 
 ## case 1 in ppt
@@ -387,7 +368,7 @@ ENERGY_LOSS_FROM_FIGHTING = 10
 ENERGY_REQUIRED_FOR_LIVING = 10
 
 
-# case 2 in ppt
+# case 3 in ppt
 STARTING_DOVES = 1000
 STARTING_HAWKS = 1000
 STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
@@ -403,7 +384,7 @@ ENERGY_LOSS_PER_ROUND = 4
 ENERGY_LOSS_FROM_FIGHTING = 25
 ENERGY_REQUIRED_FOR_LIVING = 10
 
-# case 3 in ppt
+# case 2 in ppt
 STARTING_DOVES = 1000
 STARTING_HAWKS = 1000
 STARTING_POPULATION = STARTING_HAWKS + STARTING_DOVES
