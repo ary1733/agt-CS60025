@@ -10,7 +10,7 @@ Or use the following pip command
 - pip install -r requirements.txt
 
 
-After installing the libraries use the Simulation.ipynb, 
+After installing the libraries use the Simulation.ipynb jupyter Notebook, 
 An equivalent python script is also present Simulation.py which can be executed using 
-- make
+- make run
 or python Simulation.py
